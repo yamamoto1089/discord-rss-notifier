@@ -132,12 +132,16 @@ async function checkRSSFeed(feed) {
 async function main() {
   console.log("🚀 RSS to Discord Bot を開始します");
 
-  if (!process.env.DISCORD_WEBHOOK_URL) {
-    console.error("❌ DISCORD_WEBHOOK_URL環境変数が設定されていません");
+  if (!process.env.DISCORD_CONFERENCE_WEBHOOK_URL && !process.env.DISCORD_INFORMATION_WEBHOOK_URL) {
+    console.error("❌ Discord Webhook URL環境変数が設定されていません");
     process.exit(1);
   }
 
   for (const feed of RSS_FEEDS) {
+    if (!feed.webhook) {
+      console.error(`❌ ${feed.name}のWebhook URLが設定されていません`);
+      continue;
+    }
     await checkRSSFeed(feed);
     await sleep(2000);
   }
