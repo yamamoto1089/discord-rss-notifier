@@ -102,6 +102,17 @@ const RSS_FEEDS: RSSFeed[] = [
     url: "https://sizu.me/catnose/rss",
     webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
   },
+  // マネジメント関係
+  {
+    name: "konifar-zatsu",
+    url: "https://konifar-zatsu.hatenadiary.jp/feed",
+    webhook: process.env.DISCORD_MANAGEMENT_WEBHOOK_URL,
+  },
+  {
+    name: "megamouth.info",
+    url: "https://www.megamouth.info/feed",
+    webhook: process.env.DISCORD_MANAGEMENT_WEBHOOK_URL,
+  },
 ];
 
 const parser = new Parser();
@@ -211,7 +222,7 @@ async function checkRSSFeed(feed: RSSFeed): Promise<void> {
 async function main(): Promise<void> {
   console.log("🚀 RSS to Discord Bot を開始します");
 
-  if (!process.env.DISCORD_CONFERENCE_WEBHOOK_URL && !process.env.DISCORD_INFORMATION_WEBHOOK_URL) {
+  if (!process.env.DISCORD_CONFERENCE_WEBHOOK_URL && !process.env.DISCORD_INFORMATION_WEBHOOK_URL && !process.env.DISCORD_MANAGEMENT_WEBHOOK_URL) {
     console.error("❌ Discord Webhook URL環境変数が設定されていません");
     process.exit(1);
   }
