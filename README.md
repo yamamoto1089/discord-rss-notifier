@@ -1,57 +1,107 @@
 # Discord RSS Notifier
 
-GitHub ActionsとDiscord Webhookを使用してRSSフィードの新着記事をDiscordチャンネルに自動通知するBotです。
+TypeScript製のDiscord RSS通知Bot。GitHub ActionsとDiscord Webhookを使用してRSSフィードの新着記事を複数のDiscordチャンネルに自動通知します。
 
 ## 機能
 
-- 複数のRSSフィードを監視
-- 新着記事をDiscordに自動通知
-- GitHub Actionsによる定期実行
-- 重複通知の防止
-- カスタマイズ可能な通知フォーマット
+- **13個のRSSフィード**を3つのカテゴリで監視
+- **型安全なTypeScript**実装
+- **複数チャンネル対応**（カンファレンス、技術情報、マネジメント）
+- **GitHub Actionsによる定期実行**（毎時）
+- **重複通知の防止**（キャッシュ機能）
+- **豊富なログ出力**
+
+## 監視中のRSSフィード
+
+### 📅 カンファレンス関連 (DISCORD_CONFERENCE_WEBHOOK_URL)
+- TSKaigi
+- Frontend Conference Tokyo
+- Frontend Conference Hokkaido  
+- Frontend Conference Kansai
+
+### 💻 技術情報関連 (DISCORD_INFORMATION_WEBHOOK_URL)
+- JSer.info
+- サイボウズ フロントエンド
+- チームラボ フロントエンド
+- azukiazusa.dev
+- mizchi (Zenn)
+- yoshiko (Zenn)
+- uhyo (Zenn)
+- catnose (sizu.me)
+
+### 👔 マネジメント関連 (DISCORD_MANAGEMENT_WEBHOOK_URL)
+- konifar-zatsu
+- megamouth.info
 
 ## セットアップ
 
 ### 1. Discord Webhookの作成
 
+各カテゴリ用に3つのWebhookを作成：
+
 1. 通知を送りたいDiscordチャンネルの設定を開く
 2. 「連携サービス」→「ウェブフック」→「新しいウェブフック」
-3. 名前を設定（例：RSS Bot）
+3. 名前を設定（例：Conference Bot, Tech Info Bot, Management Bot）
 4. ウェブフックURLをコピーして保存
 
 ### 2. GitHub Secretsの設定
 
+GitHubリポジトリで以下の3つのSecretを設定：
+
+| Secret名 | 説明 |
+|---------|------|
+| `DISCORD_CONFERENCE_WEBHOOK_URL` | カンファレンス情報用WebhookURL |
+| `DISCORD_INFORMATION_WEBHOOK_URL` | 技術情報用WebhookURL |
+| `DISCORD_MANAGEMENT_WEBHOOK_URL` | マネジメント情報用WebhookURL |
+
+**設定手順:**
 1. GitHubリポジトリの「Settings」→「Secrets and variables」→「Actions」
 2. 「New repository secret」をクリック
-3. Name: `DISCORD_WEBHOOK_URL`
-4. Value: コピーしたDiscord WebhookURL
-5. 「Add secret」をクリック
+3. 上記のSecret名とWebhookURLを設定
 
-### 3. RSSフィードの設定
+### 3. 動作確認
 
-`index.js`の`RSS_FEEDS`配列を編集してお好みのRSSフィードを追加してください：
-
-```javascript
-const RSS_FEEDS = [
-  {
-    name: "技術ブログ",
-    url: "https://zenn.dev/feed",
-    webhook: process.env.DISCORD_WEBHOOK_URL
-  },
-  {
-    name: "Qiita",
-    url: "https://qiita.com/popular-items/feed",
-    webhook: process.env.DISCORD_WEBHOOK_URL
-  }
-];
-```
-
-### 4. 動作確認
-
-1. すべてのファイルをコミット・プッシュ
+1. すべてのSecretを設定
 2. GitHub Actionsタブで「RSS to Discord」ワークフローを確認
 3. 「Run workflow」ボタンで手動実行してテスト
-4. Discordに通知が来るか確認
+4. 各Discordチャンネルに通知が来るか確認
+
+## 開発
+
+### 必要な環境
+- Node.js 18以上
+- TypeScript 5.0以上
+
+### ローカル開発
+
+```bash
+# 依存関係のインストール
+npm install
+
+# TypeScriptコンパイル
+npm run build
+
+# 開発実行（ts-node）
+npm run dev
+
+# 本番実行
+npm start
+
+# ビルドファイルのクリーンアップ
+npm run clean
+```
+
+### フィード追加方法
+
+`src/index.ts`の`RSS_FEEDS`配列に追加：
+
+```typescript
+{
+  name: "新しいフィード名",
+  url: "https://example.com/feed",
+  webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL, // 適切なWebhookを選択
+},
+```
 
 ## カスタマイズ
 
@@ -60,36 +110,29 @@ const RSS_FEEDS = [
 `.github/workflows/rss-check.yml`のcron設定を変更：
 
 ```yaml
-# 毎時実行
+# 毎時実行（現在の設定）
 - cron: '0 * * * *'
 
 # 30分おきに実行  
 - cron: '*/30 * * * *'
 
-# 1日3回実行（8時、14時、20時）
-- cron: '0 8,14,20 * * *'
+# 15分おきに実行（パブリックリポジトリのみ）
+- cron: '*/15 * * * *'
 ```
 
-### 複数のDiscordチャンネルに送信
+### 通知フォーマットのカスタマイズ
 
-1. GitHub Secretsに`DISCORD_WEBHOOK_URL_2`などを追加
-2. `RSS_FEEDS`で異なるwebhookを指定
+`src/index.ts`の`sendToDiscord`関数を編集：
 
-### 通知の見た目をカスタマイズ
-
-`sendToDiscord`関数の`embed`オブジェクトを編集：
-
-```javascript
-const embed = {
+```typescript
+const embed: DiscordEmbed = {
   title: article.title,
   url: article.link,
-  description: article.contentSnippet,
-  color: 0xff6b6b,  // 色を変更
-  author: {
-    name: feedName,
-    icon_url: "https://example.com/icon.png"
-  },
-  timestamp: article.pubDate
+  description: article.contentSnippet || article.summary || "",
+  color: 0x0099ff, // 色を変更
+  author: { name: feedName },
+  timestamp: article.pubDate || article.isoDate,
+  footer: { text: "RSS通知" }
 };
 ```
 
@@ -97,13 +140,19 @@ const embed = {
 
 ### よくあるエラー
 
+**TypeScriptビルドエラー**
+```bash
+npm run build
+```
+でエラー内容を確認
+
 **RSSフィードが読み込めない**
 - URLが正しいか確認
 - HTTPSでアクセス可能か確認
 
 **Discord通知が来ない**
 - Webhook URLが正しく設定されているか確認
-- GitHub Secretsの名前が`DISCORD_WEBHOOK_URL`になっているか確認
+- GitHub Secretsの名前が正確か確認
 
 **GitHub Actionsが実行されない**
 - ワークフローファイルが`.github/workflows/`に正しく配置されているか確認
@@ -115,12 +164,20 @@ const embed = {
 2. 実行されたワークフローをクリック
 3. 「check-rss」ジョブをクリックして詳細ログを確認
 
-## 注意事項
+## 技術仕様
 
-- GitHub Actionsは月2000分まで無料
-- RSS更新頻度に合わせて実行間隔を調整
-- 大量のフィードを追加する場合は実行時間に注意
-- Discord APIレート制限に注意（1秒間隔で送信）
+- **言語**: TypeScript 5.8
+- **実行環境**: Node.js 18+
+- **CI/CD**: GitHub Actions
+- **依存関係**: 
+  - rss-parser (RSS解析)
+  - axios (HTTP通信)
+- **アーキテクチャ**: サーバーレス（GitHub Actions）
+
+## 料金
+
+- **パブリックリポジトリ**: 完全無料
+- **プライベートリポジトリ**: 月2000分まで無料（現在の設定なら十分に無料枠内）
 
 ## ライセンス
 
