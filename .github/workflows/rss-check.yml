@@ -1,0 +1,44 @@
+name: RSS to Discord
+
+on:
+  schedule:
+    # 毎時実行
+    - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  check-rss:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm install
+      
+    - name: Cache RSS check data
+      uses: actions/cache@v4
+      with:
+        path: last_check.json
+        key: rss-cache-${{ github.run_id }}
+        restore-keys: |
+          rss-cache-
+          
+    - name: Run RSS check
+      env:
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      run: npm start
+      
+    - name: Save cache
+      uses: actions/cache/save@v4
+      if: always()
+      with:
+        path: last_check.json
+        key: rss-cache-${{ github.run_id }}
