@@ -30,6 +30,41 @@ const RSS_FEEDS = [
     url: "https://jser.info/rss/",
     webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
   },
+  {
+    name: "サイボウズ フロントエンド",
+    url: "https://zenn.dev/p/cybozu_frontend/feed",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
+  {
+    name: "チームラボ フロントエンド",
+    url: "https://zenn.dev/p/teamlab_fe/feed",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
+  {
+    name: "azukiazusa.dev",
+    url: "https://azukiazusa.dev/rss.xml",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
+  {
+    name: "mizchi",
+    url: "https://zenn.dev/mizchi/feed",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
+  {
+    name: "yoshiko",
+    url: "https://zenn.dev/yoshiko/feed",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
+  {
+    name: "uhyo",
+    url: "https://zenn.dev/uhyo/feed",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
+  {
+    name: "catnose",
+    url: "https://sizu.me/catnose/rss",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
 ];
 
 const parser = new Parser();
