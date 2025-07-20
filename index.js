@@ -4,13 +4,23 @@ const fs = require("fs");
 
 const RSS_FEEDS = [
   {
-    name: "技術ブログ",
-    url: "https://zenn.dev/feed",
+    name: "TSKaigi",
+    url: "https://tskaigi.hatenablog.com/feed",
     webhook: process.env.DISCORD_WEBHOOK_URL,
   },
   {
-    name: "Qiita",
-    url: "https://qiita.com/popular-items/feed",
+    name: "Frontend Conference Tokyo",
+    url: "https://note.com/fec_tokyo/rss",
+    webhook: process.env.DISCORD_WEBHOOK_URL,
+  },
+  {
+    name: "Frontend Conference Hokkaido",
+    url: "https://note.com/fec_hokkaido/rss",
+    webhook: process.env.DISCORD_WEBHOOK_URL,
+  },
+  {
+    name: "Frontend Conference Kansai",
+    url: "https://github.com/fec-kansai.atom",
     webhook: process.env.DISCORD_WEBHOOK_URL,
   },
 ];
