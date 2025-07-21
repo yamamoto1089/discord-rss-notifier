@@ -102,6 +102,21 @@ const RSS_FEEDS: RSSFeed[] = [
     url: "https://sizu.me/catnose/rss",
     webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
   },
+  {
+    name: "TechFeed Web/Frontend",
+    url: "https://techfeed.io/feeds/categories/Web%20%2F%20Frontend?userId=60864ae5e298f182511ad497",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
+  {
+    name: "TechFeed AI/BigData",
+    url: "https://techfeed.io/feeds/categories/AI%20%2F%20BigData?userId=60864ae5e298f182511ad497",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
+  {
+    name: "Jxck Blog",
+    url: "https://blog.jxck.io/feeds/atom.xml",
+    webhook: process.env.DISCORD_INFORMATION_WEBHOOK_URL,
+  },
   // マネジメント関係
   {
     name: "konifar-zatsu",
@@ -111,6 +126,11 @@ const RSS_FEEDS: RSSFeed[] = [
   {
     name: "megamouth.info",
     url: "https://www.megamouth.info/feed",
+    webhook: process.env.DISCORD_MANAGEMENT_WEBHOOK_URL,
+  },
+  {
+    name: "TechFeed Product Management",
+    url: "https://techfeed.io/feeds/channels/Product%20Management?userId=60864ae5e298f182511ad497",
     webhook: process.env.DISCORD_MANAGEMENT_WEBHOOK_URL,
   },
 ];
