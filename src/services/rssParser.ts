@@ -6,17 +6,16 @@ import { sleep } from '../utils/helpers';
 import { RATE_LIMIT_DELAY } from '../utils/constants';
 
 export class RSSParser {
-  private static parser = new Parser();
+  private parser = new Parser();
 
-  static async checkRSSFeed(feed: RSSFeed): Promise<void> {
+  async checkRSSFeed(feed: RSSFeed): Promise<void> {
     console.log(`🔍 RSSフィードをチェック中: ${feed.name}`);
 
     try {
       const rssFeed = await this.parser.parseURL(feed.url);
       const lastCheck = CacheManager.loadLastCheck();
-      const lastCheckTime = lastCheck[feed.url]
-        ? new Date(lastCheck[feed.url]!)
-        : new Date(0);
+      const lastCheckDate = lastCheck[feed.url];
+      const lastCheckTime = lastCheckDate ? new Date(lastCheckDate) : new Date(0);
 
       const newArticles: Article[] = [];
 

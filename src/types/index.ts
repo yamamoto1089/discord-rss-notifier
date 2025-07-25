@@ -1,7 +1,7 @@
 export interface RSSFeed {
   name: string;
   url: string;
-  webhook: string | undefined;
+  webhook?: string;
 }
 
 export interface Article {
@@ -14,17 +14,17 @@ export interface Article {
 }
 
 export interface DiscordEmbed {
-  title?: string | undefined;
-  url?: string | undefined;
-  description?: string | undefined;
-  color?: number | undefined;
+  title?: string;
+  url?: string;
+  description?: string;
+  color?: number;
   author?: {
     name: string;
-  } | undefined;
-  timestamp?: string | undefined;
+  };
+  timestamp?: string;
   footer?: {
     text: string;
-  } | undefined;
+  };
 }
 
 export interface DiscordPayload {

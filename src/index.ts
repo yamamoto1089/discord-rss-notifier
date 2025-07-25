@@ -12,12 +12,14 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
+  const rssParser = new RSSParser();
+
   for (const feed of RSS_FEEDS) {
     if (!feed.webhook) {
       console.error(`❌ ${feed.name}のWebhook URLが設定されていません`);
       continue;
     }
-    await RSSParser.checkRSSFeed(feed);
+    await rssParser.checkRSSFeed(feed);
     await sleep(FEED_CHECK_DELAY);
   }
 
