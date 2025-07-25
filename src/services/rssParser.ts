@@ -32,7 +32,6 @@ export class RSSParser {
       if (newArticles.length > 0) {
         console.log(`📰 新しい記事が ${newArticles.length} 件見つかりました`);
 
-        // Sort articles by date (oldest first)
         newArticles.sort((a, b) => {
           const dateStringA = a.pubDate || a.isoDate;
           const dateStringB = b.pubDate || b.isoDate;
@@ -41,15 +40,12 @@ export class RSSParser {
           return dateA.getTime() - dateB.getTime();
         });
 
-        // Send notifications for new articles
         for (const article of newArticles) {
           if (feed.webhook) {
             await DiscordNotifier.sendToDiscord(article, feed.name, feed.webhook);
             await sleep(RATE_LIMIT_DELAY);
           }
         }
-
-        // Update cache
         lastCheck[feed.url] = new Date().toISOString();
         CacheManager.saveLastCheck(lastCheck);
       } else {
