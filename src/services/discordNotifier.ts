@@ -3,7 +3,7 @@ import { Article, DiscordEmbed, DiscordPayload } from '../types';
 import { DISCORD_EMBED_COLOR, FOOTER_TEXT } from '../utils/constants';
 
 export class DiscordNotifier {
-  static async sendToDiscord(
+  async sendToDiscord(
     article: Article, 
     feedName: string, 
     webhook: string

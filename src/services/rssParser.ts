@@ -7,13 +7,18 @@ import { RATE_LIMIT_DELAY } from '../utils/constants';
 
 export class RSSParser {
   private parser = new Parser();
+  
+  constructor(
+    private cacheManager: CacheManager,
+    private discordNotifier: DiscordNotifier
+  ) {}
 
   async checkRSSFeed(feed: RSSFeed): Promise<void> {
     console.log(`🔍 RSSフィードをチェック中: ${feed.name}`);
 
     try {
       const rssFeed = await this.parser.parseURL(feed.url);
-      const lastCheck = CacheManager.loadLastCheck();
+      const lastCheck = this.cacheManager.loadLastCheck();
       const lastCheckDate = lastCheck[feed.url];
       const lastCheckTime = lastCheckDate ? new Date(lastCheckDate) : new Date(0);
 
@@ -42,12 +47,12 @@ export class RSSParser {
 
         for (const article of newArticles) {
           if (feed.webhook) {
-            await DiscordNotifier.sendToDiscord(article, feed.name, feed.webhook);
+            await this.discordNotifier.sendToDiscord(article, feed.name, feed.webhook);
             await sleep(RATE_LIMIT_DELAY);
           }
         }
         lastCheck[feed.url] = new Date().toISOString();
-        CacheManager.saveLastCheck(lastCheck);
+        this.cacheManager.saveLastCheck(lastCheck);
       } else {
         console.log("📝 新しい記事はありませんでした");
       }

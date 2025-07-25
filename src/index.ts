@@ -1,6 +1,7 @@
 import { RSS_FEEDS } from './config/feeds';
 import { RSSParser } from './services/rssParser';
 import { DiscordNotifier } from './services/discordNotifier';
+import { CacheManager } from './services/cacheManager';
 import { sleep } from './utils/helpers';
 import { FEED_CHECK_DELAY } from './utils/constants';
 
@@ -12,7 +13,9 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const rssParser = new RSSParser();
+  const cacheManager = new CacheManager();
+  const discordNotifier = new DiscordNotifier();
+  const rssParser = new RSSParser(cacheManager, discordNotifier);
 
   for (const feed of RSS_FEEDS) {
     if (!feed.webhook) {
@@ -30,4 +33,4 @@ if (require.main === module) {
   main().catch(console.error);
 }
 
-export { main, DiscordNotifier, RSSParser };
+export { main, DiscordNotifier, RSSParser, CacheManager };
