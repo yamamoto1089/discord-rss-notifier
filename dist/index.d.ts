@@ -1,18 +1,5 @@
-interface RSSFeed {
-    name: string;
-    url: string;
-    webhook: string | undefined;
-}
-interface Article {
-    title?: string;
-    link?: string;
-    contentSnippet?: string;
-    summary?: string;
-    pubDate?: string;
-    isoDate?: string;
-}
-declare function sendToDiscord(article: Article, feedName: string, webhook: string): Promise<void>;
-declare function checkRSSFeed(feed: RSSFeed): Promise<void>;
+import { RSSParser } from './services/rssParser';
+import { DiscordNotifier } from './services/discordNotifier';
 declare function main(): Promise<void>;
-export { main, checkRSSFeed, sendToDiscord };
+export { main, DiscordNotifier, RSSParser };
 //# sourceMappingURL=index.d.ts.map

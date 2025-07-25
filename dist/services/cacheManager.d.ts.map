@@ -1,0 +1,1 @@
+{"version":3,"file":"cacheManager.d.ts","sourceRoot":"","sources":["../../src/services/cacheManager.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,aAAa,EAAE,MAAM,UAAU,CAAC;AAGzC,qBAAa,YAAY;IACvB,MAAM,CAAC,aAAa,IAAI,aAAa;IAYrC,MAAM,CAAC,aAAa,CAAC,IAAI,EAAE,aAAa,GAAG,IAAI;CAOhD"}
