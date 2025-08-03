@@ -27,7 +27,7 @@ your-repo/
 
 1. GitHubリポジトリの「Settings」→「Secrets and variables」→「Actions」
 2. 「New repository secret」をクリック
-3. Name: `DISCORD_WEBHOOK_URL`
+3. Name: `setting.json`
 4. Value: 先ほどコピーしたDiscord WebhookURL
 5. 「Add secret」をクリック
 

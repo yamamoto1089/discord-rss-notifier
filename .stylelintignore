@@ -1,0 +1,17 @@
+# JavaScript files
+*.js
+*.mjs
+*.ts
+*.tsx
+
+# Build directories
+dist/
+node_modules/
+
+# Test files
+test/
+tests/
+__tests__/
+
+# Documentation
+*.md

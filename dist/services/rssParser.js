@@ -5,19 +5,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RSSParser = void 0;
 const rss_parser_1 = __importDefault(require("rss-parser"));
-const cacheManager_1 = require("./cacheManager");
-const discordNotifier_1 = require("./discordNotifier");
 const helpers_1 = require("../utils/helpers");
 const constants_1 = require("../utils/constants");
 class RSSParser {
-    static async checkRSSFeed(feed) {
+    constructor(cacheManager, discordNotifier) {
+        this.cacheManager = cacheManager;
+        this.discordNotifier = discordNotifier;
+        this.parser = new rss_parser_1.default();
+    }
+    async checkRSSFeed(feed) {
         console.log(`🔍 RSSフィードをチェック中: ${feed.name}`);
         try {
             const rssFeed = await this.parser.parseURL(feed.url);
-            const lastCheck = cacheManager_1.CacheManager.loadLastCheck();
-            const lastCheckTime = lastCheck[feed.url]
-                ? new Date(lastCheck[feed.url])
-                : new Date(0);
+            const lastCheck = this.cacheManager.loadLastCheck();
+            const lastCheckDate = lastCheck[feed.url];
+            const lastCheckTime = lastCheckDate ? new Date(lastCheckDate) : new Date(0);
             const newArticles = [];
             for (const item of rssFeed.items) {
                 const dateString = item.pubDate || item.isoDate;
@@ -39,12 +41,12 @@ class RSSParser {
                 });
                 for (const article of newArticles) {
                     if (feed.webhook) {
-                        await discordNotifier_1.DiscordNotifier.sendToDiscord(article, feed.name, feed.webhook);
+                        await this.discordNotifier.sendToDiscord(article, feed.name, feed.webhook);
                         await (0, helpers_1.sleep)(constants_1.RATE_LIMIT_DELAY);
                     }
                 }
                 lastCheck[feed.url] = new Date().toISOString();
-                cacheManager_1.CacheManager.saveLastCheck(lastCheck);
+                this.cacheManager.saveLastCheck(lastCheck);
             }
             else {
                 console.log("📝 新しい記事はありませんでした");
@@ -56,5 +58,4 @@ class RSSParser {
     }
 }
 exports.RSSParser = RSSParser;
-RSSParser.parser = new rss_parser_1.default();
 //# sourceMappingURL=rssParser.js.map

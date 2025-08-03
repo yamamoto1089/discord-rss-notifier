@@ -31,5 +31,16 @@
     "github-actions"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "stylelint": {
+    "extends": [],
+    "ignoreFiles": [
+      "**/*.js",
+      "**/*.mjs",
+      "**/*.ts",
+      "**/*.tsx",
+      "dist/**/*",
+      "node_modules/**/*"
+    ]
+  }
 }

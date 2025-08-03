@@ -7,7 +7,7 @@ exports.DiscordNotifier = void 0;
 const axios_1 = __importDefault(require("axios"));
 const constants_1 = require("../utils/constants");
 class DiscordNotifier {
-    static async sendToDiscord(article, feedName, webhook) {
+    async sendToDiscord(article, feedName, webhook) {
         const embed = {
             title: article.title,
             url: article.link,

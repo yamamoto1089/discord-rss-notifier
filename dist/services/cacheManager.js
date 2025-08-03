@@ -37,7 +37,7 @@ exports.CacheManager = void 0;
 const fs = __importStar(require("fs"));
 const constants_1 = require("../utils/constants");
 class CacheManager {
-    static loadLastCheck() {
+    loadLastCheck() {
         try {
             if (fs.existsSync(constants_1.CACHE_FILE)) {
                 const data = fs.readFileSync(constants_1.CACHE_FILE, "utf8");
@@ -49,7 +49,7 @@ class CacheManager {
         }
         return {};
     }
-    static saveLastCheck(data) {
+    saveLastCheck(data) {
         try {
             fs.writeFileSync(constants_1.CACHE_FILE, JSON.stringify(data, null, 2));
         }

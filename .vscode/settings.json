@@ -1,0 +1,14 @@
+{
+  "stylelint.validate": [
+    "css",
+    "scss",
+    "sass",
+    "less"
+  ],
+  "stylelint.snippet": [
+    "css",
+    "scss",
+    "sass",
+    "less"
+  ]
+}
