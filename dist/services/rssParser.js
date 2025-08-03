@@ -5,8 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RSSParser = void 0;
 const rss_parser_1 = __importDefault(require("rss-parser"));
-const helpers_1 = require("../utils/helpers");
-const constants_1 = require("../utils/constants");
 class RSSParser {
     constructor(cacheManager, discordNotifier) {
         this.cacheManager = cacheManager;
@@ -37,13 +35,11 @@ class RSSParser {
                     const dateStringB = b.pubDate || b.isoDate;
                     const dateA = dateStringA ? new Date(dateStringA) : new Date(0);
                     const dateB = dateStringB ? new Date(dateStringB) : new Date(0);
-                    return dateA.getTime() - dateB.getTime();
+                    return dateB.getTime() - dateA.getTime();
                 });
-                for (const article of newArticles) {
-                    if (feed.webhook) {
-                        await this.discordNotifier.sendToDiscord(article, feed.name, feed.webhook);
-                        await (0, helpers_1.sleep)(constants_1.RATE_LIMIT_DELAY);
-                    }
+                const latestArticle = newArticles[0];
+                if (feed.webhook && latestArticle) {
+                    await this.discordNotifier.sendToDiscord(latestArticle, feed.name, feed.webhook);
                 }
                 lastCheck[feed.url] = new Date().toISOString();
                 this.cacheManager.saveLastCheck(lastCheck);

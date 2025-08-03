@@ -1,14 +1,18 @@
-import { RSS_FEEDS } from './config/feeds';
-import { RSSParser } from './services/rssParser';
-import { DiscordNotifier } from './services/discordNotifier';
-import { CacheManager } from './services/cacheManager';
-import { sleep } from './utils/helpers';
-import { FEED_CHECK_DELAY } from './utils/constants';
+import { RSS_FEEDS } from "./config/feeds";
+import { RSSParser } from "./services/rssParser";
+import { DiscordNotifier } from "./services/discordNotifier";
+import { CacheManager } from "./services/cacheManager";
+import { sleep } from "./utils/helpers";
+import { FEED_CHECK_DELAY } from "./utils/constants";
 
 async function main(): Promise<void> {
   console.log("🚀 RSS to Discord Bot を開始します");
 
-  if (!process.env.DISCORD_CONFERENCE_WEBHOOK_URL && !process.env.DISCORD_INFORMATION_WEBHOOK_URL && !process.env.DISCORD_MANAGEMENT_WEBHOOK_URL) {
+  if (
+    !process.env.DISCORD_CONFERENCE_WEBHOOK_URL &&
+    !process.env.DISCORD_INFORMATION_WEBHOOK_URL &&
+    !process.env.DISCORD_MANAGEMENT_WEBHOOK_URL
+  ) {
     console.error("❌ Discord Webhook URL環境変数が設定されていません");
     process.exit(1);
   }
