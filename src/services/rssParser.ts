@@ -1,13 +1,11 @@
-import Parser from 'rss-parser';
-import { Article, RSSFeed } from '../types';
-import { CacheManager } from './cacheManager';
-import { DiscordNotifier } from './discordNotifier';
-import { sleep } from '../utils/helpers';
-import { RATE_LIMIT_DELAY } from '../utils/constants';
+import Parser from "rss-parser";
+import { Article, RSSFeed } from "../types";
+import { CacheManager } from "./cacheManager";
+import { DiscordNotifier } from "./discordNotifier";
 
 export class RSSParser {
   private parser = new Parser();
-  
+
   constructor(
     private cacheManager: CacheManager,
     private discordNotifier: DiscordNotifier
@@ -20,7 +18,9 @@ export class RSSParser {
       const rssFeed = await this.parser.parseURL(feed.url);
       const lastCheck = this.cacheManager.loadLastCheck();
       const lastCheckDate = lastCheck[feed.url];
-      const lastCheckTime = lastCheckDate ? new Date(lastCheckDate) : new Date(0);
+      const lastCheckTime = lastCheckDate
+        ? new Date(lastCheckDate)
+        : new Date(0);
 
       const newArticles: Article[] = [];
 
@@ -47,9 +47,13 @@ export class RSSParser {
 
         const latestArticle = newArticles[0];
         if (feed.webhook && latestArticle) {
-          await this.discordNotifier.sendToDiscord(latestArticle, feed.name, feed.webhook);
+          await this.discordNotifier.sendToDiscord(
+            latestArticle,
+            feed.name,
+            feed.webhook
+          );
         }
-        
+
         lastCheck[feed.url] = new Date().toISOString();
         this.cacheManager.saveLastCheck(lastCheck);
       } else {

@@ -1,4 +1,4 @@
-import { RSSFeed } from '../types';
+import { RSSFeed } from "../types";
 
 export const RSS_FEEDS: RSSFeed[] = [
   // カンファレンス関係

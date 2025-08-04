@@ -1,11 +1,11 @@
-import axios from 'axios';
-import { Article, DiscordEmbed, DiscordPayload } from '../types';
-import { DISCORD_EMBED_COLOR, FOOTER_TEXT } from '../utils/constants';
+import axios from "axios";
+import { Article, DiscordEmbed, DiscordPayload } from "../types";
+import { DISCORD_EMBED_COLOR, FOOTER_TEXT } from "../utils/constants";
 
 export class DiscordNotifier {
   async sendToDiscord(
-    article: Article, 
-    feedName: string, 
+    article: Article,
+    feedName: string,
     webhook: string
   ): Promise<void> {
     const embed: DiscordEmbed = {

@@ -1,4 +1,4 @@
-import { LastCheckData } from '../types';
+import { LastCheckData } from "../types";
 export declare class CacheManager {
     loadLastCheck(): LastCheckData;
     saveLastCheck(data: LastCheckData): void;

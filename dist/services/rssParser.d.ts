@@ -1,6 +1,6 @@
-import { RSSFeed } from '../types';
-import { CacheManager } from './cacheManager';
-import { DiscordNotifier } from './discordNotifier';
+import { RSSFeed } from "../types";
+import { CacheManager } from "./cacheManager";
+import { DiscordNotifier } from "./discordNotifier";
 export declare class RSSParser {
     private cacheManager;
     private discordNotifier;

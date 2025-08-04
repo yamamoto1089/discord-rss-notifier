@@ -1,6 +1,6 @@
-import * as fs from 'fs';
-import { LastCheckData } from '../types';
-import { CACHE_FILE } from '../utils/constants';
+import * as fs from "fs";
+import { LastCheckData } from "../types";
+import { CACHE_FILE } from "../utils/constants";
 
 export class CacheManager {
   loadLastCheck(): LastCheckData {
@@ -10,7 +10,10 @@ export class CacheManager {
         return JSON.parse(data) as LastCheckData;
       }
     } catch (error) {
-      console.log("キャッシュファイルの読み込みに失敗:", (error as Error).message);
+      console.log(
+        "キャッシュファイルの読み込みに失敗:",
+        (error as Error).message
+      );
     }
     return {};
   }

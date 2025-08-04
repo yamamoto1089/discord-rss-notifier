@@ -17,7 +17,9 @@ class RSSParser {
             const rssFeed = await this.parser.parseURL(feed.url);
             const lastCheck = this.cacheManager.loadLastCheck();
             const lastCheckDate = lastCheck[feed.url];
-            const lastCheckTime = lastCheckDate ? new Date(lastCheckDate) : new Date(0);
+            const lastCheckTime = lastCheckDate
+                ? new Date(lastCheckDate)
+                : new Date(0);
             const newArticles = [];
             for (const item of rssFeed.items) {
                 const dateString = item.pubDate || item.isoDate;
